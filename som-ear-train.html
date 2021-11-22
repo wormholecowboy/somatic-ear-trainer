@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Somatic Ear Trainer</title>
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<!-- <script type="module" src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script>
+	<script type="module" src="https://unpkg.com/tone"></script> -->
+
+	<script src="./tone/build/Tone.js"></script>
+	<script src="tonalmin.js"></script>
+
+
+	 	<script>
+	 		
+	 		var noteArrayCm = ["C3", "D3", "Eb3", "F3", "G3", "Ab3", "Bb3", "C4", "D4", ]//"Eb4", "F4"];
+	 		var startStopState = false;
+	 		const synthA = new Tone.Synth().toDestination();
+	 		const synthB = new Tone.Synth().toDestination();
+	 		const chord = new Tone.PolySynth(Tone.Synth).toDestination();
+	 		const now = Tone.now();
+	 		let currentNote;
+	 		let previousNote;
+
+
+	 		function rando(min, max) {
+ 				  min = Math.ceil(min);
+ 				  max = Math.floor(max);
+ 				  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+ 					}	
+	
+ 	 		function trigSynthA(time) {
+ 	 			console.log("synthA time: " + time);
+	 			synthA.triggerAttackRelease(noteArrayCm [rando (0,noteArrayCm.length) ], "8n");
+	 			}
+
+ 			function trigSynthB(time) {
+	 			synthB.triggerAttackRelease(noteArrayCm[rando(0,noteArrayCm.length)], "8n");
+	 			}
+
+ 			function trigChord(time) {
+ 				chord.triggerAttackRelease("C5", now);
+ 				chord.triggerAttackRelease("Eb5", now);
+ 				chord.triggerAttackRelease("G5", now);
+
+ 			}
+
+	 		const loopA = new Tone.Loop(trigSynthA, "4n");
+	 		//play another note every off quarter-note, by starting it "8n"
+
+	 		const loopB = new Tone.Loop(trigSynthB, "4n");
+	 		// the loops start when the Transport is started
+
+	 		const loopC = new Tone.Loop(trigChord, "2n");
+
+	 		console.log(synthA.triggerAttackRelease)
+
+
+	 		loopA.start(0);
+	 		//loopB.start("8n");
+	 		loopC.start(0);
+	 		function starts() {
+		 		Tone.Transport.bpm.value = 30;
+	 			Tone.Transport.start();
+	 			};
+
+
+
+
+
+
+ 		// 	var startStopState = false;
+ 		// 	var noteArrayCm = ["C3", "D3", "Eb3", "F3", "G3", "Ab3", "Bb3", "C4", "D4", "Eb4", "F4"];
+ 		// 	var scale = Tonal.Scale.get("C4 minor").notes;
+ 		// 	let note1;
+ 		// 	let note2;
+ 		// 	const now = Tone.now();
+ 		// 	const synth1 = new Tone.Synth().toDestination();	
+ 		// 	const synth2 = new Tone.DuoSynth().toDestination();		
+ 			
+			// function getRandomNote(min, max) {
+ 		// 		  min = Math.ceil(min);
+ 		// 		  max = Math.floor(max);
+ 		// 		  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+ 		// 		}
+
+ 		// 			// Tone.Transport.scheduleRepeat(playNotes, "1n")
+
+			// function playNotes(){
+ 		// 		//while (startStopState == true) {
+
+ 		// 			note1 = getRandomNote(0, noteArrayCm.length);
+ 		// 			note2 = getRandomNote(0, noteArrayCm.length);
+
+
+ 		// 			if (note1 !== note2) {
+ 		// 				synth1.triggerAttackRelease(note1, "16n", now)
+ 		// 				synth2.triggerAttackRelease(note2, "16n", now + 1)
+ 		// 			} else {continue}
+ 		// 		}
+ 		// //	}
+
+
+ 			function run() {
+ 				if (startStopState == true) {
+ 					Tone.Transport.stop();
+ 					startStopState = false;
+ 					console.log("stop");
+ 				} else {
+ 					startStopState = true;
+ 					console.log("start");
+ 					starts();
+ 					}
+ 			}
+
+ 		
+
+
+
+
+
+ 			// this object is creating multiple instances !!! make it just one 
+
+ 			//THIS ONE WORKS...SORTA
+
+ 			// pattern = new Tone.Pattern(
+ 			// 	(time, noteArrayCm) => {
+ 			// 		Tone.Transport.bpm.value = 30;
+ 			// 		synth.triggerAttackRelease(noteArrayCm, '16n', time);
+ 			// 	},
+ 			// 	noteArrayCm,
+ 			// 	"randomOnce"
+ 			// 	); 
+ 			// // this will add space in b/w notes: 
+ 			// pattern.interval = '2n';
+ 			// pattern.start();
+ 			// Tone.Transport.start(); 				
+ 			// }
+
+
+
+
+			 
+		</script>
+</head>
+<body>
+	<main>
+		<h1>The Somatic Ear Trainer</h1>
+		<button id="run" onclick="run()">Start/Stop</button>
+		<br>
+		<select id="scale">
+			<option value="major">Major</option>
+			<option value="minor">Minor</option>
+		</select>
+		<br>
+		<div id="range-selector">
+			<select id="range-start">
+					<option>B</option>
+					<option>C</option>
+			</select>
+			<select id="range-end">
+					<option>G</option>
+			</select>
+		</div>
+		<br>
+		<select id="numOfNotes">
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+			<option>6</option>
+		</select>
+		<br>
+	</main>
+
+	<script>
+		// console.log(Tonal.Scale.get("C major").notes);
+	</script>
+
+</body>
+</html>
