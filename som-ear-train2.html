@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Somatic Ear Trainer</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<script type="module" src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script>
+	<script type="module" src="https://unpkg.com/tone"></script>
+	<script src="./tone/build/Tone.js"></script>
+<!-- 	<script type="module" src="eartrainer.js"></script>
+	 -->
+
+	 	<script>
+
+ 			var startStopState = false;
+ 			var noteArrayCm = ["C4", "D4", "Eb4", "F4", "G4"]; //, "Ab5", "Bb5", "C5"];
+ 			var scale = Tonal.Scale.get("C4 minor").notes;
+ 			let currentNote;
+
+
+ 			
+
+
+ 			function initializeAudio() {
+
+ 			const synth = new Tone.Synth().toDestination();		
+
+ 			// this object is creating multiple instances !!! make it just one
+
+ 			pattern = new Tone.Pattern(
+ 				(time, noteArrayCm) => {
+ 					Tone.Transport.bpm.value = 30;
+ 					synth.triggerAttackRelease(noteArrayCm, '16n', time);
+ 				},
+ 				noteArrayCm,
+ 				"random"
+ 				); 
+ 			pattern.start();
+ 			Tone.Transport.start(); 				
+ 			}
+
+
+ 			function runPlayNote() {
+ 				if (startStopState == true) {
+ 					Tone.Transport.stop();
+ 					startStopState = false;
+ 					console.log(false);
+ 				} else {
+ 					startStopState = true;
+ 					console.log(true);
+ 					initializeAudio();
+ 					}
+ 			}
+
+
+
+			// function getRandomNote(min, max) {
+ 		// 		  min = Math.ceil(min);
+ 		// 		  max = Math.floor(max);
+ 		// 		  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+ 		// 		}
+
+ 		// 	function playNote() {
+			// 	while (startStopState == true) {
+			// 	synth.triggerAttackRelease(randomArrayNote, "8n");
+			// 	}
+			// }
+
+			// Tone.Transport.scheduleRepeat(time => {
+			// 	repeat(time);
+			// }, "4n");
+
+			// function repeat(time) {
+			// 	while (startStopState == true) {
+			// 	synth.triggerAttackRelease(randomArrayNote, "8n", time);
+			// 	}
+			// }
+		
+
+			// var seq = new Tone.Sequence(function(time, note){
+			// 	console.log(note);
+			// 	//straight quater notes
+			// 	}, ["C4", "E4", "G4", "A4"], "4n");
+			 
+		</script>
+</head>
+<body>
+	<main>
+		<h1>The Somatic Ear Trainer</h1>
+		<button id="run" onclick="runPlayNote()">Start/Stop</button>
+		<br>
+		<select id="scale">
+			<option value="major">Major</option>
+			<option value="minor">Minor</option>
+		</select>
+		<br>
+		<div id="range-selector">
+			<select id="range-start">
+					<option>B</option>
+					<option>C</option>
+			</select>
+			<select id="range-end">
+					<option>G</option>
+			</select>
+		</div>
+		<br>
+		<select id="numOfNotes">
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+			<option>6</option>
+		</select>
+		<br>
+	</main>
+
+	<script>
+		// console.log(Tonal.Scale.get("C major").notes);
+	</script>
+
+</body>
+</html>

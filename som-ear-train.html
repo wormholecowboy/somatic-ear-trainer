@@ -10,7 +10,7 @@
 	<script type="module" src="https://unpkg.com/tone"></script> -->
 
 	<script src="./tone/build/Tone.js"></script>
-	<script src="tonalmin.js"></script>
+	
 
 
 	 	<script>
@@ -23,6 +23,15 @@
 	 		const now = Tone.now();
 	 		let currentNote;
 	 		let previousNote;
+
+		
+			
+
+			
+
+
+			
+			
 
 
 	 		function rando(min, max) {
@@ -55,36 +64,15 @@
 
 	 		const loopC = new Tone.Loop(trigChord, "2n");
 
-	 		console.log(synthA.triggerAttackRelease)
-
-
+	
 	 		loopA.start(0);
-	 		//loopB.start("8n");
+	 		loopB.start("8n");
 	 		loopC.start(0);
 	 		function starts() {
-		 		Tone.Transport.bpm.value = 30;
+		 		Tone.Transport.bpm.value = 20;
 	 			Tone.Transport.start();
 	 			};
 
-
-
-
-
-
- 		// 	var startStopState = false;
- 		// 	var noteArrayCm = ["C3", "D3", "Eb3", "F3", "G3", "Ab3", "Bb3", "C4", "D4", "Eb4", "F4"];
- 		// 	var scale = Tonal.Scale.get("C4 minor").notes;
- 		// 	let note1;
- 		// 	let note2;
- 		// 	const now = Tone.now();
- 		// 	const synth1 = new Tone.Synth().toDestination();	
- 		// 	const synth2 = new Tone.DuoSynth().toDestination();		
- 			
-			// function getRandomNote(min, max) {
- 		// 		  min = Math.ceil(min);
- 		// 		  max = Math.floor(max);
- 		// 		  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
- 		// 		}
 
  		// 			// Tone.Transport.scheduleRepeat(playNotes, "1n")
 
@@ -111,6 +99,7 @@
  				} else {
  					startStopState = true;
  					console.log("start");
+					Tone.start();
  					starts();
  					}
  			}
@@ -157,11 +146,10 @@
 		<br>
 		<div id="range-selector">
 			<select id="range-start">
-					<option>B</option>
-					<option>C</option>
+					
 			</select>
 			<select id="range-end">
-					<option>G</option>
+					
 			</select>
 		</div>
 		<br>
@@ -176,7 +164,16 @@
 	</main>
 
 	<script>
-		// console.log(Tonal.Scale.get("C major").notes);
+			let test = document.getElementById("range-start");
+			let option = document.createElement("option");
+
+		function appending () {
+				noteArrayCm.forEach(element => {
+					option.text = element;
+					test.add(option);
+				})
+			}
+		appending();
 	</script>
 
 </body>

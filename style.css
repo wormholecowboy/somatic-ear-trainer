@@ -1,0 +1,22 @@
+
+
+main {
+background-color: lightblue;
+height: 500px;
+width: 400px;
+margin: 0 auto;
+position: relative;
+padding: 5px;
+}
+
+select, button, div {
+display: block;
+margin: 10px auto;
+font-size: 20px;
+padding: 5px;
+}
+
+h1 {
+text-align: center;
+margin-bottom: 30px;
+}
