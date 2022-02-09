@@ -6,16 +6,16 @@
 
 	<link rel="stylesheet" type="text/css" href="style.css">
 
-	<!-- <script type="module" src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script>
-	<script type="module" src="https://unpkg.com/tone"></script> -->
-
 	<script src="./tone/build/Tone.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script>
 	
 
 
 	 	<script>
-	 		
-	 		var noteArrayCm = ["C3", "D3", "Eb3", "F3", "G3", "Ab3", "Bb3", "C4", "D4", ]//"Eb4", "F4"];
+			
+			
+
+	 		var noteArrayCm = ["C3", "D3", "Eb3", "F3", "G3", "Ab3", "Bb3", "C4", "D4"]//, "Eb4", "F4"];
 	 		var startStopState = false;
 	 		const synthA = new Tone.Synth().toDestination();
 	 		const synthB = new Tone.Synth().toDestination();
@@ -25,13 +25,7 @@
 	 		let previousNote;
 
 		
-			
 
-			
-
-
-			
-			
 
 
 	 		function rando(min, max) {
@@ -139,18 +133,27 @@
 		<h1>The Somatic Ear Trainer</h1>
 		<button id="run" onclick="run()">Start/Stop</button>
 		<br>
-		<select id="scale">
+		<select id="scaleLetter">
+			<option>Ab</option>
+			<option>A</option>
+			<option>Bb</option>
+			<option>B</option>
+			<option>C</option>
+			<option>Db</option>
+			<option>D</option>
+			<option>Eb</option>
+			<option>F</option>
+			<option>Gb</option>
+			<option>G</option>
+		</select>
+		<select id="scaleTonality">
 			<option value="major">Major</option>
 			<option value="minor">Minor</option>
 		</select>
 		<br>
 		<div id="range-selector">
-			<select id="range-start">
-					
-			</select>
-			<select id="range-end">
-					
-			</select>
+			<select id="range-start"></select>
+			<select id="range-end"></select>
 		</div>
 		<br>
 		<select id="numOfNotes">
@@ -164,15 +167,37 @@
 	</main>
 
 	<script>
-			let test = document.getElementById("range-start");
-			let option = document.createElement("option");
 
+		// Fill array with selected Scale
+		let scaleLetter;
+		let scaleTonality;
+		scaleTonality = document.getElementById('scaleTonality').value;
+		scaleLetter = document.getElementById('scaleLetter').value;
+		let totalRange = Tonal.Scale.rangeOf(`${scaleLetter} ${scaleTonality}`);
+		let totalRange2 = totalRange("A3", "G7");
+		console.log(totalRange2);
+
+
+		// Append notes from noteArray to the range selection boxes
 		function appending () {
-				noteArrayCm.forEach(element => {
-					option.text = element;
-					test.add(option);
-				})
+			let rangeStart = document.getElementById("range-start");
+			let rangeEnd = document.getElementById("range-end");
+
+			for(let note of noteArrayCm ) {
+				option = document.createElement("option");
+				option2 = document.createElement("option");
+				option.value = note;
+				option.text = note;
+				option2.value = note;
+				option2.text = note;
+				rangeStart.appendChild(option);
+				rangeEnd.appendChild(option2);
 			}
+				// noteArrayCm.forEach(element => {
+				// 	option.text = element;
+				// 	test.add(option);
+				// })
+		}
 		appending();
 	</script>
 
