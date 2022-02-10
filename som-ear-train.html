@@ -15,7 +15,7 @@
 			
 			
 
-	 		var noteArrayCm = ["C3", "D3", "Eb3", "F3", "G3", "Ab3", "Bb3", "C4", "D4"]//, "Eb4", "F4"];
+	 		var selectedRangeOfNotes = [];
 	 		var startStopState = false;
 	 		const synthA = new Tone.Synth().toDestination();
 	 		const synthB = new Tone.Synth().toDestination();
@@ -23,24 +23,25 @@
 	 		const now = Tone.now();
 	 		let currentNote;
 	 		let previousNote;
+			let scaleTonality;
+			let scaleLetter;	
+			let totalRange;
 
-		
-
-
-
+			// Grab random notes
 	 		function rando(min, max) {
  				  min = Math.ceil(min);
  				  max = Math.floor(max);
  				  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
  					}	
 	
+			// Trigger the synth sounds
  	 		function trigSynthA(time) {
  	 			console.log("synthA time: " + time);
-	 			synthA.triggerAttackRelease(noteArrayCm [rando (0,noteArrayCm.length) ], "8n");
+	 			synthA.triggerAttackRelease(selectedRangeOfNotes [rando (0,selectedRangeOfNotes.length) ], "8n");
 	 			}
 
  			function trigSynthB(time) {
-	 			synthB.triggerAttackRelease(noteArrayCm[rando(0,noteArrayCm.length)], "8n");
+	 			synthB.triggerAttackRelease(selectedRangeOfNotes[rando(0,selectedRangeOfNotes.length)], "8n");
 	 			}
 
  			function trigChord(time) {
@@ -50,41 +51,23 @@
 
  			}
 
+			// Loops
 	 		const loopA = new Tone.Loop(trigSynthA, "4n");
 	 		//play another note every off quarter-note, by starting it "8n"
-
 	 		const loopB = new Tone.Loop(trigSynthB, "4n");
 	 		// the loops start when the Transport is started
-
 	 		const loopC = new Tone.Loop(trigChord, "2n");
-
-	
 	 		loopA.start(0);
 	 		loopB.start("8n");
 	 		loopC.start(0);
+
+			// Start Tone transport and set BPM
 	 		function starts() {
 		 		Tone.Transport.bpm.value = 20;
 	 			Tone.Transport.start();
 	 			};
 
-
- 		// 			// Tone.Transport.scheduleRepeat(playNotes, "1n")
-
-			// function playNotes(){
- 		// 		//while (startStopState == true) {
-
- 		// 			note1 = getRandomNote(0, noteArrayCm.length);
- 		// 			note2 = getRandomNote(0, noteArrayCm.length);
-
-
- 		// 			if (note1 !== note2) {
- 		// 				synth1.triggerAttackRelease(note1, "16n", now)
- 		// 				synth2.triggerAttackRelease(note2, "16n", now + 1)
- 		// 			} else {continue}
- 		// 		}
- 		// //	}
-
-
+			// Start/Stop Button Function
  			function run() {
  				if (startStopState == true) {
  					Tone.Transport.stop();
@@ -99,29 +82,6 @@
  			}
 
  		
-
-
-
-
-
- 			// this object is creating multiple instances !!! make it just one 
-
- 			//THIS ONE WORKS...SORTA
-
- 			// pattern = new Tone.Pattern(
- 			// 	(time, noteArrayCm) => {
- 			// 		Tone.Transport.bpm.value = 30;
- 			// 		synth.triggerAttackRelease(noteArrayCm, '16n', time);
- 			// 	},
- 			// 	noteArrayCm,
- 			// 	"randomOnce"
- 			// 	); 
- 			// // this will add space in b/w notes: 
- 			// pattern.interval = '2n';
- 			// pattern.start();
- 			// Tone.Transport.start(); 				
- 			// }
-
 
 
 
@@ -169,21 +129,30 @@
 	<script>
 
 		// Fill array with selected Scale
-		let scaleLetter;
-		let scaleTonality;
-		scaleTonality = document.getElementById('scaleTonality').value;
-		scaleLetter = document.getElementById('scaleLetter').value;
-		let totalRange = Tonal.Scale.rangeOf(`${scaleLetter} ${scaleTonality}`);
-		let totalRange2 = totalRange("A3", "G7");
-		console.log(totalRange2);
+	
+		let rangeStart;
+		let rangeEnd;
 
+		// Changing notes from noteArray to the range selection boxes
+		function appendScaleChanges () {
 
-		// Append notes from noteArray to the range selection boxes
-		function appending () {
-			let rangeStart = document.getElementById("range-start");
-			let rangeEnd = document.getElementById("range-end");
+			scaleTonality = document.getElementById('scaleTonality').value;
+			scaleLetter = document.getElementById('scaleLetter').value;
+			let getTonalRange = Tonal.Scale.rangeOf(`${scaleLetter} ${scaleTonality}`);
+			totalRange = getTonalRange("A3", "G7");
+			rangeStart = document.getElementById("range-start");
+			rangeEnd = document.getElementById("range-end");
 
-			for(let note of noteArrayCm ) {
+			// Delete old nodes
+			while (rangeStart.hasChildNodes()) {
+					rangeStart.removeChild(rangeStart.lastChild);
+					}
+			while (rangeEnd.hasChildNodes()) {
+			rangeEnd.removeChild(rangeEnd.lastChild);
+			}
+
+			// Append new nodes
+			for(let note of totalRange) {
 				option = document.createElement("option");
 				option2 = document.createElement("option");
 				option.value = note;
@@ -193,12 +162,35 @@
 				rangeStart.appendChild(option);
 				rangeEnd.appendChild(option2);
 			}
-				// noteArrayCm.forEach(element => {
-				// 	option.text = element;
-				// 	test.add(option);
-				// })
+		} appendScaleChanges();
+
+		// Input Listeners
+		document.addEventListener('DOMContentLoaded', () => {
+			document
+				.getElementById('scaleLetter')
+				.addEventListener('input', appendScaleChanges);
+			document
+			.getElementById('scaleTonality')
+			.addEventListener('input', appendScaleChanges);
+			document
+				.getElementById('range-start')
+				.addEventListener('input', filterNotesArray);
+			document
+			.getElementById('range-end')
+			.addEventListener('input', filterNotesArray);
+				
+		})
+
+		function filterNotesArray() {
+			let firstNote = totalRange.indexOf(rangeStart.value);
+			let lastNote = totalRange.indexOf(rangeEnd.value);
+			console.log(firstNote);
+			console.log(lastNote);
+
+			selectedRangeOfNotes = totalRange.slice(firstNote, lastNote+1);
+			console.log(selectedRangeOfNotes);
 		}
-		appending();
+
 	</script>
 
 </body>
