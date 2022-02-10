@@ -1,197 +1,192 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<title>Somatic Ear Trainer</title>
+  <head>
+    <meta charset="utf-8" />
+    <title>Somatic Ear Trainer</title>
 
-	<link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css" />
 
-	<script src="./tone/build/Tone.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script>
-	
+    <script src="./tone/build/Tone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script>
 
+    <script>
+      var selectedRangeOfNotes = [];
+      var startStopState = false;
+      const synthA = new Tone.Synth().toDestination();
+      const synthB = new Tone.Synth().toDestination();
+      const chord = new Tone.PolySynth(Tone.Synth).toDestination();
+      const now = Tone.now();
+      let currentNote;
+      let previousNote;
+      let scaleTonality;
+      let scaleLetter;
+      let totalRange;
 
-	 	<script>
-			
-			
+      // Grab random notes
+      function rando(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+      }
 
-	 		var selectedRangeOfNotes = [];
-	 		var startStopState = false;
-	 		const synthA = new Tone.Synth().toDestination();
-	 		const synthB = new Tone.Synth().toDestination();
-	 		const chord = new Tone.PolySynth(Tone.Synth).toDestination();
-	 		const now = Tone.now();
-	 		let currentNote;
-	 		let previousNote;
-			let scaleTonality;
-			let scaleLetter;	
-			let totalRange;
+      // Trigger the synth sounds
+      function trigSynthA(time) {
+        console.log('synthA time: ' + time);
+        synthA.triggerAttackRelease(
+          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
+          '8n'
+        );
+      }
 
-			// Grab random notes
-	 		function rando(min, max) {
- 				  min = Math.ceil(min);
- 				  max = Math.floor(max);
- 				  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
- 					}	
-	
-			// Trigger the synth sounds
- 	 		function trigSynthA(time) {
- 	 			console.log("synthA time: " + time);
-	 			synthA.triggerAttackRelease(selectedRangeOfNotes [rando (0,selectedRangeOfNotes.length) ], "8n");
-	 			}
+      function trigSynthB(time) {
+        synthB.triggerAttackRelease(
+          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
+          '8n'
+        );
+      }
 
- 			function trigSynthB(time) {
-	 			synthB.triggerAttackRelease(selectedRangeOfNotes[rando(0,selectedRangeOfNotes.length)], "8n");
-	 			}
+      function trigChord(time) {
+        chord.triggerAttackRelease('C5', now);
+        chord.triggerAttackRelease('Eb5', now);
+        chord.triggerAttackRelease('G5', now);
+      }
 
- 			function trigChord(time) {
- 				chord.triggerAttackRelease("C5", now);
- 				chord.triggerAttackRelease("Eb5", now);
- 				chord.triggerAttackRelease("G5", now);
+      // Loops
+      const loopA = new Tone.Loop(trigSynthA, '4n');
+      //play another note every off quarter-note, by starting it "8n"
+      const loopB = new Tone.Loop(trigSynthB, '4n');
+      // the loops start when the Transport is started
+      const loopC = new Tone.Loop(trigChord, '2n');
+      loopA.start(0);
+      loopB.start('8n');
+      loopC.start(0);
 
- 			}
+      // Start Tone transport and set BPM
+      function starts() {
+        Tone.Transport.bpm.value = 20;
+        Tone.Transport.start();
+      }
 
-			// Loops
-	 		const loopA = new Tone.Loop(trigSynthA, "4n");
-	 		//play another note every off quarter-note, by starting it "8n"
-	 		const loopB = new Tone.Loop(trigSynthB, "4n");
-	 		// the loops start when the Transport is started
-	 		const loopC = new Tone.Loop(trigChord, "2n");
-	 		loopA.start(0);
-	 		loopB.start("8n");
-	 		loopC.start(0);
+      // Start/Stop Button Function
+      function run() {
+        if (startStopState == true) {
+          Tone.Transport.stop();
+          startStopState = false;
+          console.log('stop');
+        } else {
+          startStopState = true;
+          console.log('start');
+          Tone.start();
+          starts();
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1>The Somatic Ear Trainer</h1>
+      <button id="run" onclick="run()">Start/Stop</button>
+      <br />
+      <select id="scaleLetter">
+        <option>Ab</option>
+        <option>A</option>
+        <option>Bb</option>
+        <option>B</option>
+        <option>C</option>
+        <option>Db</option>
+        <option>D</option>
+        <option>Eb</option>
+        <option>F</option>
+        <option>Gb</option>
+        <option>G</option>
+      </select>
+      <select id="scaleTonality">
+        <option value="major">Major</option>
+        <option value="minor">Minor</option>
+      </select>
+      <br />
+      <div id="range-selector">
+        <select id="range-start"></select>
+        <select id="range-end"></select>
+      </div>
+      <br />
+      <select id="speed">
+        <option>0.5</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+      </select>
+      <br />
+    </main>
 
-			// Start Tone transport and set BPM
-	 		function starts() {
-		 		Tone.Transport.bpm.value = 20;
-	 			Tone.Transport.start();
-	 			};
+    <script>
+      let rangeStart;
+      let rangeEnd;
 
-			// Start/Stop Button Function
- 			function run() {
- 				if (startStopState == true) {
- 					Tone.Transport.stop();
- 					startStopState = false;
- 					console.log("stop");
- 				} else {
- 					startStopState = true;
- 					console.log("start");
-					Tone.start();
- 					starts();
- 					}
- 			}
+      // Changing notes from noteArray to the range selection boxes
+      function appendScaleChanges() {
+        scaleTonality = document.getElementById('scaleTonality').value;
+        scaleLetter = document.getElementById('scaleLetter').value;
+        let getTonalRange = Tonal.Scale.rangeOf(
+          `${scaleLetter} ${scaleTonality}`
+        );
+        totalRange = getTonalRange('A3', 'G7');
+        rangeStart = document.getElementById('range-start');
+        rangeEnd = document.getElementById('range-end');
 
- 		
+        // Delete old nodes
+        while (rangeStart.hasChildNodes()) {
+          rangeStart.removeChild(rangeStart.lastChild);
+        }
+        while (rangeEnd.hasChildNodes()) {
+          rangeEnd.removeChild(rangeEnd.lastChild);
+        }
 
+        // Append new nodes
+        for (let note of totalRange) {
+          option = document.createElement('option');
+          option2 = document.createElement('option');
+          option.value = note;
+          option.text = note;
+          option2.value = note;
+          option2.text = note;
+          rangeStart.appendChild(option);
+          rangeEnd.appendChild(option2);
+        }
+      }
+      appendScaleChanges();
 
+      // Input Listeners
+      document.addEventListener('DOMContentLoaded', () => {
+        document
+          .getElementById('scaleLetter')
+          .addEventListener('input', appendScaleChanges);
+        document
+          .getElementById('scaleTonality')
+          .addEventListener('input', appendScaleChanges);
+        document
+          .getElementById('range-start')
+          .addEventListener('input', filterNotesArray);
+        document
+          .getElementById('range-end')
+          .addEventListener('input', filterNotesArray);
+        document.getElementById('speed').addEventListener('input', changeSpeed);
+      });
 
-			 
-		</script>
-</head>
-<body>
-	<main>
-		<h1>The Somatic Ear Trainer</h1>
-		<button id="run" onclick="run()">Start/Stop</button>
-		<br>
-		<select id="scaleLetter">
-			<option>Ab</option>
-			<option>A</option>
-			<option>Bb</option>
-			<option>B</option>
-			<option>C</option>
-			<option>Db</option>
-			<option>D</option>
-			<option>Eb</option>
-			<option>F</option>
-			<option>Gb</option>
-			<option>G</option>
-		</select>
-		<select id="scaleTonality">
-			<option value="major">Major</option>
-			<option value="minor">Minor</option>
-		</select>
-		<br>
-		<div id="range-selector">
-			<select id="range-start"></select>
-			<select id="range-end"></select>
-		</div>
-		<br>
-		<select id="numOfNotes">
-			<option>2</option>
-			<option>3</option>
-			<option>4</option>
-			<option>5</option>
-			<option>6</option>
-		</select>
-		<br>
-	</main>
+      function changeSpeed() {}
 
-	<script>
+      function filterNotesArray() {
+        let firstNote = totalRange.indexOf(rangeStart.value);
+        let lastNote = totalRange.indexOf(rangeEnd.value);
+        console.log(firstNote);
+        console.log(lastNote);
 
-		// Fill array with selected Scale
-	
-		let rangeStart;
-		let rangeEnd;
-
-		// Changing notes from noteArray to the range selection boxes
-		function appendScaleChanges () {
-
-			scaleTonality = document.getElementById('scaleTonality').value;
-			scaleLetter = document.getElementById('scaleLetter').value;
-			let getTonalRange = Tonal.Scale.rangeOf(`${scaleLetter} ${scaleTonality}`);
-			totalRange = getTonalRange("A3", "G7");
-			rangeStart = document.getElementById("range-start");
-			rangeEnd = document.getElementById("range-end");
-
-			// Delete old nodes
-			while (rangeStart.hasChildNodes()) {
-					rangeStart.removeChild(rangeStart.lastChild);
-					}
-			while (rangeEnd.hasChildNodes()) {
-			rangeEnd.removeChild(rangeEnd.lastChild);
-			}
-
-			// Append new nodes
-			for(let note of totalRange) {
-				option = document.createElement("option");
-				option2 = document.createElement("option");
-				option.value = note;
-				option.text = note;
-				option2.value = note;
-				option2.text = note;
-				rangeStart.appendChild(option);
-				rangeEnd.appendChild(option2);
-			}
-		} appendScaleChanges();
-
-		// Input Listeners
-		document.addEventListener('DOMContentLoaded', () => {
-			document
-				.getElementById('scaleLetter')
-				.addEventListener('input', appendScaleChanges);
-			document
-			.getElementById('scaleTonality')
-			.addEventListener('input', appendScaleChanges);
-			document
-				.getElementById('range-start')
-				.addEventListener('input', filterNotesArray);
-			document
-			.getElementById('range-end')
-			.addEventListener('input', filterNotesArray);
-				
-		})
-
-		function filterNotesArray() {
-			let firstNote = totalRange.indexOf(rangeStart.value);
-			let lastNote = totalRange.indexOf(rangeEnd.value);
-			console.log(firstNote);
-			console.log(lastNote);
-
-			selectedRangeOfNotes = totalRange.slice(firstNote, lastNote+1);
-			console.log(selectedRangeOfNotes);
-		}
-
-	</script>
-
-</body>
+        selectedRangeOfNotes = totalRange.slice(firstNote, lastNote + 1);
+        console.log(selectedRangeOfNotes);
+      }
+    </script>
+  </body>
 </html>
