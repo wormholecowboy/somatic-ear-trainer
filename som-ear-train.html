@@ -16,8 +16,8 @@
       const synthB = new Tone.Synth().toDestination();
       const chord = new Tone.PolySynth(Tone.Synth).toDestination();
       const now = Tone.now();
-      var currentNote;
-      var previousNote;
+      var currentNote = 0;
+      var previousNote = 0;
       let scaleTonality;
       let scaleLetter;
       let totalRange;
@@ -28,9 +28,9 @@
       function rando(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
-        if (currentNote == undefined) {
-          currentNote = 0;
-        }
+
+        previousNote = currentNote;
+
         while (currentNote == previousNote) {
           currentNote = Math.floor(Math.random() * (max - min) + min);
         }
@@ -80,9 +80,11 @@
         if (startStopState == true) {
           Tone.Transport.stop();
           startStopState = false;
+          document.getElementById('light').style.color = 'red';
           console.log('stop');
         } else {
           startStopState = true;
+          document.getElementById('light').style.color = 'green';
           console.log('start');
           Tone.start();
           starts();
@@ -93,6 +95,7 @@
   <body>
     <main>
       <h1>The Somatic Ear Trainer</h1>
+      <h2 id="light">o</h2>
       <button id="run" onclick="run()">Start/Stop</button>
       <br />
       <select id="scaleLetter">
@@ -161,7 +164,7 @@
         let getTonalRange = Tonal.Scale.rangeOf(
           `${scaleLetter} ${scaleTonality}`
         );
-        totalRange = getTonalRange('A3', 'G7');
+        totalRange = getTonalRange('A2', 'G6');
 
         // Delete old nodes
         while (rangeStart.hasChildNodes()) {
