@@ -21,7 +21,9 @@
       let scaleTonality;
       let scaleLetter;
       let totalRange;
+      let speed = 20;
 
+      // GET RID OF DOUBLE NOTES!!!
       // Grab random notes
       function rando(min, max) {
         min = Math.ceil(min);
@@ -34,14 +36,14 @@
         console.log('synthA time: ' + time);
         synthA.triggerAttackRelease(
           selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
-          '8n'
+          '16n'
         );
       }
 
       function trigSynthB(time) {
         synthB.triggerAttackRelease(
           selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
-          '8n'
+          '16n'
         );
       }
 
@@ -58,12 +60,12 @@
       // the loops start when the Transport is started
       const loopC = new Tone.Loop(trigChord, '2n');
       loopA.start(0);
-      loopB.start('8n');
-      loopC.start(0);
+      //loopB.start('8n');
+      //loopC.start(0);
 
       // Start Tone transport and set BPM
       function starts() {
-        Tone.Transport.bpm.value = 20;
+        Tone.Transport.bpm.value = speed;
         Tone.Transport.start();
       }
 
@@ -110,15 +112,30 @@
         <select id="range-end"></select>
       </div>
       <br />
-      <select id="speed">
-        <option>0.5</option>
+      <!-- <select id="numOfNotes">
         <option>1</option>
         <option>2</option>
         <option>3</option>
         <option>4</option>
         <option>5</option>
         <option>6</option>
-      </select>
+      </select> -->
+      <div class="tooltip">
+        <span class="tooltiptext"
+          ><script>
+            `${speed}`;
+          </script></span
+        >
+        <!-- ADD A TOOL TIP HERE!!!!-->
+        <input
+          type="range"
+          min="1"
+          max="60"
+          value="20"
+          class="slider"
+          id="speed"
+        />
+      </div>
       <br />
     </main>
 
@@ -156,6 +173,7 @@
           rangeStart.appendChild(option);
           rangeEnd.appendChild(option2);
         }
+        // SET VALUE OF RANGE END TO LAST CHILD, also set default to B Minor
       }
       appendScaleChanges();
 
@@ -176,7 +194,9 @@
         document.getElementById('speed').addEventListener('input', changeSpeed);
       });
 
-      function changeSpeed() {}
+      function changeSpeed() {
+        speed = document.getElementById('speed').value;
+      }
 
       function filterNotesArray() {
         let firstNote = totalRange.indexOf(rangeStart.value);
