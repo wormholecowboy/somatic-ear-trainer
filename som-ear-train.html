@@ -16,19 +16,25 @@
       const synthB = new Tone.Synth().toDestination();
       const chord = new Tone.PolySynth(Tone.Synth).toDestination();
       const now = Tone.now();
-      let currentNote;
-      let previousNote;
+      var currentNote;
+      var previousNote;
       let scaleTonality;
       let scaleLetter;
       let totalRange;
-      let speed = 20;
+      let speed = 30;
 
       // GET RID OF DOUBLE NOTES!!!
       // Grab random notes
       function rando(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+        if (currentNote == undefined) {
+          currentNote = 0;
+        }
+        while (currentNote == previousNote) {
+          currentNote = Math.floor(Math.random() * (max - min) + min);
+        }
+        return currentNote;
       }
 
       // Trigger the synth sounds
@@ -140,8 +146,13 @@
     </main>
 
     <script>
-      let rangeStart;
-      let rangeEnd;
+      let rangeStart = document.getElementById('range-start');
+      let rangeEnd = document.getElementById('range-end');
+
+      // Set default values
+      function setRangeEnd() {
+        rangeEnd.value = rangeEnd.lastChild.value;
+      }
 
       // Changing notes from noteArray to the range selection boxes
       function appendScaleChanges() {
@@ -151,8 +162,6 @@
           `${scaleLetter} ${scaleTonality}`
         );
         totalRange = getTonalRange('A3', 'G7');
-        rangeStart = document.getElementById('range-start');
-        rangeEnd = document.getElementById('range-end');
 
         // Delete old nodes
         while (rangeStart.hasChildNodes()) {
@@ -173,7 +182,6 @@
           rangeStart.appendChild(option);
           rangeEnd.appendChild(option2);
         }
-        // SET VALUE OF RANGE END TO LAST CHILD, also set default to B Minor
       }
       appendScaleChanges();
 
