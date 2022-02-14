@@ -164,7 +164,7 @@
         let getTonalRange = Tonal.Scale.rangeOf(
           `${scaleLetter} ${scaleTonality}`
         );
-        totalRange = getTonalRange('A2', 'G6');
+        totalRange = getTonalRange('A2', 'G5');
 
         // Delete old nodes
         while (rangeStart.hasChildNodes()) {
@@ -185,6 +185,7 @@
           rangeStart.appendChild(option);
           rangeEnd.appendChild(option2);
         }
+        rangeEnd.value = rangeEnd.lastChild.value;
       }
       appendScaleChanges();
 
