@@ -130,27 +130,25 @@
         <option>6</option>
       </select> -->
       <div class="tooltip">
-        <span class="tooltiptext"
-          ><script>
-            `${speed}`;
-          </script></span
-        >
-        <!-- ADD A TOOL TIP HERE!!!!-->
-        <input
-          type="range"
-          min="1"
-          max="60"
-          value="20"
-          class="slider"
-          id="speed"
-        />
+        <p id="ptag"></p>
       </div>
+      <input
+        type="range"
+        min="1"
+        max="60"
+        value="20"
+        class="slider"
+        id="speed"
+        onchange="displaySpeed(this.value);"
+      />
+
       <br />
     </main>
 
     <script>
       let rangeStart = document.getElementById('range-start');
       let rangeEnd = document.getElementById('range-end');
+      let rangeSlider = document.getElementById('speed');
 
       // Set default values
       function setRangeEnd() {
@@ -203,11 +201,18 @@
         document
           .getElementById('range-end')
           .addEventListener('input', filterNotesArray);
-        document.getElementById('speed').addEventListener('input', changeSpeed);
+        document.getElementById('speed').addEventListener('input', () => {
+          changeSpeed();
+          displaySpeed();
+        });
       });
 
       function changeSpeed() {
         speed = document.getElementById('speed').value;
+      }
+
+      function displaySpeed() {
+        document.getElementById('ptag').innerHTML = rangeSlider.value;
       }
 
       function filterNotesArray() {

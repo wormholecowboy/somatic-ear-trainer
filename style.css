@@ -10,12 +10,19 @@ main {
 
 select,
 button,
-input,
 div {
   display: block;
   margin: 10px auto;
   font-size: 20px;
   padding: 5px;
+}
+
+input {
+  display: block;
+  margin: 10px auto;
+  font-size: 20px;
+  padding: 5px;
+  width: 300px;
 }
 
 h1,
@@ -24,27 +31,18 @@ h2 {
   margin-bottom: 30px;
 }
 
-/* .tooltip {
+.tooltip {
   position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  display: block;
+  margin: 0px, auto;
+  background-color: rgb(255, 255, 255);
+  width: 30px;
+  height: 30px;
+}
 
-/* Tooltip text */
-/* .tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: black;
-  color: #fff;
+p {
+  display: absolute;
+  padding: 0px 0px;
+  margin: auto auto;
   text-align: center;
-  padding: 5px 0;
-  border-radius: 6px; */
-
-/* Position the tooltip text - see examples below! */
-/* position: absolute;
-  z-index: 1;
-} */
-
-/* Show the tooltip text when you mouse over the tooltip container */
-/* .tooltip:active .tooltiptext {
-  visibility: visible;
-} */
+}
