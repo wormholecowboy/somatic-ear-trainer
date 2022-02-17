@@ -68,14 +68,14 @@
       const chord = new Tone.PolySynth(Tone.Synth).toDestination();
       const loopA = new Tone.Loop(trigSynthA, '4n');
       const now = Tone.now();
-      var selectedRangeOfNotes = ['B2', 'C#3', 'D3'];
+      var selectedRangeOfNotes = ['B2', 'C#3', 'D3', 'E3', 'F#3'];
       var startStopState = false;
       var currentNote = 0;
       var previousNote = 0;
       let scaleTonality;
       let scaleLetter;
       let totalRange;
-      let speed = 30;
+      let speed = 25;
       // HTML Elements
       let rangeStart = document.getElementById('range-start');
       let rangeEnd = document.getElementById('range-end');
@@ -112,6 +112,25 @@
           '16n'
         );
         console.log(`Random Index: ${currentNote}`);
+      }
+
+      // Phrase Trainer (Doesn't work yet) Try "now + 0.5"
+      function phraseTrainer() {
+        synthA.triggerAttackRelease(
+          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
+          '16n'
+        );
+        synthA.triggerAttackRelease(
+          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
+          '16n',
+          now + '2n'
+        );
+        synthA.triggerAttackRelease(
+          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
+          '16n',
+          now + '4n'
+        );
+        setTimeout(phraseTrainer(), 5000);
       }
 
       // Grab random notes
