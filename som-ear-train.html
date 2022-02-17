@@ -13,7 +13,6 @@
       var selectedRangeOfNotes = [];
       var startStopState = false;
       const synthA = new Tone.Synth().toDestination();
-      const synthB = new Tone.Synth().toDestination();
       const chord = new Tone.PolySynth(Tone.Synth).toDestination();
       const now = Tone.now();
       var currentNote = 0;
@@ -46,13 +45,6 @@
         );
       }
 
-      function trigSynthB(time) {
-        synthB.triggerAttackRelease(
-          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
-          '16n'
-        );
-      }
-
       function trigChord(time) {
         chord.triggerAttackRelease('C5', now);
         chord.triggerAttackRelease('Eb5', now);
@@ -76,7 +68,7 @@
       }
 
       // Start/Stop Button Function
-      function run() {
+      async function run() {
         if (startStopState == true) {
           Tone.Transport.stop();
           startStopState = false;
@@ -86,7 +78,7 @@
           startStopState = true;
           document.getElementById('light').style.color = 'green';
           console.log('start');
-          Tone.start();
+          await Tone.start();
           starts();
         }
       }
@@ -139,7 +131,6 @@
         value="20"
         class="slider"
         id="speed"
-        onchange="displaySpeed(this.value);"
       />
 
       <br />
