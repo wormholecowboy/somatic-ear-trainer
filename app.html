@@ -58,7 +58,7 @@
         value="20"
         class="slider"
         id="speedSlider"
-        onchange="displaySpeed(this.value);"
+        oninput="displaySpeed(this.value);"
       />
       <br />
     </main>
@@ -68,18 +68,19 @@
       const chord = new Tone.PolySynth(Tone.Synth).toDestination();
       const loopA = new Tone.Loop(trigSynthA, '4n');
       const now = Tone.now();
-      var selectedRangeOfNotes = ['B2', 'C#3', 'D3', 'E3', 'F#3'];
+      var selectedRangeOfNotes = [];
+      'B2', 'C#3', 'D3', 'E3', 'F#3';
       var startStopState = false;
       var currentNote = 0;
       var previousNote = 0;
-      let scaleTonality;
-      let scaleLetter;
       let totalRange;
       let speed = 25;
       // HTML Elements
       let rangeStart = document.getElementById('range-start');
       let rangeEnd = document.getElementById('range-end');
       let rangeSlider = document.getElementById('speedSlider');
+      let scaleTonality = document.getElementById('scaleTonality');
+      let scaleLetter = document.getElementById('scaleLetter');
 
       // Start/Stop Button Function
       function run() {
@@ -91,7 +92,8 @@
         } else {
           startStopState = true;
           document.getElementById('light').style.color = 'green';
-          console.log('start');
+          console.log('start', selectedRangeOfNotes);
+
           Tone.start();
           startTransport();
         }
@@ -151,7 +153,85 @@
         rangeEnd.value = rangeEnd.lastChild.value;
       }
 
-      //    START WITH THE APPENDSCALECHANGES()
+      // Delete old nodes
+      function deleteOldNodes() {
+        while (rangeStart.hasChildNodes()) {
+          rangeStart.removeChild(rangeStart.lastChild);
+        }
+        while (rangeEnd.hasChildNodes()) {
+          rangeEnd.removeChild(rangeEnd.lastChild);
+        }
+      }
+
+      function appendNewNodes() {
+        for (let note of totalRange) {
+          option = document.createElement('option');
+          option2 = document.createElement('option');
+          option.value = note;
+          option.text = note;
+          option2.value = note;
+          option2.text = note;
+          rangeStart.appendChild(option);
+          rangeEnd.appendChild(option2);
+        }
+        rangeEnd.value = rangeEnd.lastChild.value;
+      }
+
+      // Changing notes from noteArray to the range selection boxes
+      function appendScaleChanges() {
+        // Grab scale from Tonal and set initial working range (totalRange)
+        let getTonalRange = Tonal.Scale.rangeOf(
+          `${scaleLetter.value} ${scaleTonality.value}`
+        );
+        totalRange = getTonalRange('A2', 'G5');
+        console.log(totalRange);
+
+        deleteOldNodes();
+        appendNewNodes();
+        filterNotesArray();
+      }
+      appendScaleChanges();
+
+      function changeSpeed() {
+        speed = rangeSlider.value;
+        console.log(speed);
+      }
+
+      function displaySpeed() {
+        document.getElementById('ptag').innerHTML = rangeSlider.value;
+      }
+
+      function filterNotesArray() {
+        let firstNote = totalRange.indexOf(rangeStart.value);
+        let lastNote = totalRange.indexOf(rangeEnd.value);
+        console.log('First note index: ' + firstNote);
+        console.log('Last note index: ' + lastNote);
+
+        selectedRangeOfNotes = totalRange.slice(firstNote, lastNote + 1);
+        console.log(selectedRangeOfNotes);
+      }
+
+      // EVENT LISTENERS
+      document
+        .getElementById('scaleLetter')
+        .addEventListener('input', appendScaleChanges);
+      document
+        .getElementById('scaleTonality')
+        .addEventListener('input', appendScaleChanges);
+      document
+        .getElementById('range-start')
+        .addEventListener('input', filterNotesArray);
+      document
+        .getElementById('range-end')
+        .addEventListener('input', filterNotesArray);
+      document.getElementById('speedSlider').addEventListener('input', () => {
+        changeSpeed();
+        displaySpeed();
+      });
+
+      // Starting Defaults I like
+      scaleLetter.value = 'B';
+      scaleTonality.value = 'minor';
     </script>
   </body>
 </html>
