@@ -49,7 +49,7 @@
         <option>6</option>
       </select> -->
       <div class="tooltip">
-        <p id="ptag"></p>
+        <p id="ptag">20</p>
       </div>
       <input
         type="range"
@@ -116,24 +116,13 @@
         console.log(`Random Index: ${currentNote}`);
       }
 
-      // Phrase Trainer (Doesn't work yet) Try "now + 0.5"
-      function phraseTrainer() {
+      // Phrase Trainer (Doesn't work yet)
+      const phraseTrainer = new Tone.Loop((time) => {
         synthA.triggerAttackRelease(
           selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
-          '16n'
+          '32n'
         );
-        synthA.triggerAttackRelease(
-          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
-          '16n',
-          now + '2n'
-        );
-        synthA.triggerAttackRelease(
-          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
-          '16n',
-          now + '4n'
-        );
-        setTimeout(phraseTrainer(), 5000);
-      }
+      }, '16n');
 
       // Grab random notes
       function rando(min, max) {
@@ -147,6 +136,9 @@
         }
         return currentNote;
       }
+
+      /* -----------------------------------------DOM Manipulation -----------------------------------
+       ----------------------------------------------------------------------------------------------------*/
 
       // Set default values
       function setRangeEnd() {
@@ -230,8 +222,8 @@
       });
 
       // Starting Defaults I like
-      scaleLetter.value = 'B';
-      scaleTonality.value = 'minor';
+      //scaleLetter.value = 'B';
+      //scaleTonality.value = 'minor';
     </script>
   </body>
 </html>
