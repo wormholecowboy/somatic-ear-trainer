@@ -103,7 +103,8 @@
       function startTransport() {
         Tone.Transport.bpm.value = speed;
         Tone.Transport.start();
-        loopA.start();
+        //loopA.start();
+        phraseTrainer.start();
       }
 
       // Trigger the synth sounds
@@ -116,13 +117,24 @@
         console.log(`Random Index: ${currentNote}`);
       }
 
-      // Phrase Trainer (Doesn't work yet)
+      // Phrase Trainer
       const phraseTrainer = new Tone.Loop((time) => {
         synthA.triggerAttackRelease(
           selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
-          '32n'
+          '16n',
+          '+1'
         );
-      }, '16n');
+        synthA.triggerAttackRelease(
+          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
+          '16n',
+          '+2'
+        );
+        synthA.triggerAttackRelease(
+          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
+          '16n',
+          '+3' // this value is when the note is scheduled within the loop
+        );
+      }, '2n'); // this last value is how often the loop triggers
 
       // Grab random notes
       function rando(min, max) {
