@@ -82,6 +82,18 @@
       let scaleTonality = document.getElementById('scaleTonality');
       let scaleLetter = document.getElementById('scaleLetter');
 
+      const noiseSynth = new Tone.NoiseSynth().toDestination();
+      const metronome = new Tone.Loop(() => {
+        noiseSynth.triggerAttackRelease('8n');
+      }, '4n');
+      /*  -----------------------------------------------------------------------------
+            REFACTORING TO DO
+            -edit random function?
+            -make random note variable
+            -use ("C Minor").notes to see if you can replace weird array behavior
+
+             ----------------------------------------------------------------------------- */
+
       // Start/Stop Button Function
       function run() {
         if (startStopState == true) {
@@ -103,38 +115,28 @@
       function startTransport() {
         Tone.Transport.bpm.value = speed;
         Tone.Transport.start();
+        metronome.start();
         //loopA.start();
         phraseTrainer.start();
       }
 
-      // Trigger the synth sounds
+      // Trigger the synth sound
       function trigSynthA(time) {
         console.log('synthA time: ' + time);
         synthA.triggerAttackRelease(
           selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
-          '16n'
+          '16n',
+          time
         );
         console.log(`Random Index: ${currentNote}`);
       }
 
       // Phrase Trainer
       const phraseTrainer = new Tone.Loop((time) => {
-        synthA.triggerAttackRelease(
-          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
-          '16n',
-          '+1'
-        );
-        synthA.triggerAttackRelease(
-          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
-          '16n',
-          '+2'
-        );
-        synthA.triggerAttackRelease(
-          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
-          '16n',
-          '+3' // this value is when the note is scheduled within the loop
-        );
-      }, '2n'); // this last value is how often the loop triggers
+        Tone.Transport.scheduleOnce(trigSynthA(time));
+        Tone.Transport.scheduleOnce(trigSynthA('+8n'));
+        Tone.Transport.scheduleOnce(trigSynthA('+4n'));
+      }, '1m'); // this last value is how often the loop triggers
 
       // Grab random notes
       function rando(min, max) {
@@ -149,8 +151,28 @@
         return currentNote;
       }
 
+      let currentRhythm = 0;
+      let prevRhythm = 0;
+
+      // Grab random rhythm
+      function random(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+
+        prevRhythm = currentRhythm;
+
+        while (currentRhythm == prevRhythm) {
+          currentRhythm = Math.floor(Math.random() * (max - min) + min);
+        }
+        return currentRhythm;
+      }
+
+      let rhythms = ['+4n', '+8n', '+16n', '+4n.', '+8n.', '+16n.'];
+      let randomRhythm = random(0, rhythms.length);
+
+      console.log(rhythms[randomRhythm]);
       /* -----------------------------------------DOM Manipulation -----------------------------------
-       ----------------------------------------------------------------------------------------------------*/
+             ----------------------------------------------------------------------------------------------------*/
 
       // Set default values
       function setRangeEnd() {
@@ -198,7 +220,6 @@
 
       function changeSpeed() {
         speed = rangeSlider.value;
-        console.log(speed);
       }
 
       function displaySpeed() {
