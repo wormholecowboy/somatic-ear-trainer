@@ -91,22 +91,28 @@
             REFACTORING TO DO
             -edit random function?
             -make random note variable
-            -use ("C Minor").notes to see if you can replace weird array behavior
+
             -maybe create an object that holds the state of the notes array?
              ----------------------------------------------------------------------------- */
 
+      function greenRedLight() {
+        if (light.style.color != 'green') {
+          light.style.color = 'green';
+        } else {
+          light.style.color = 'red';
+        }
+      }
+
       // Start/Stop Button Function
       function run() {
+        greenRedLight();
         if (startStopState == true) {
           Tone.Transport.stop();
           startStopState = false;
-          document.getElementById('light').style.color = 'red';
           console.log('stop');
         } else {
           startStopState = true;
-          document.getElementById('light').style.color = 'green';
-          console.log('start', selectedRangeOfNotes);
-
+          console.log('Start');
           Tone.start();
           startTransport();
         }
@@ -123,13 +129,11 @@
 
       // Trigger the synth sound
       function trigSynthA(time) {
-        console.log('synthA time: ' + time);
         synthA.triggerAttackRelease(
-          selectedRangeOfNotes[rando(0, selectedRangeOfNotes.length)],
+          selectedRangeOfNotes[randomNotes(0, selectedRangeOfNotes.length)],
           '16n',
           time
         );
-        console.log(`Random Index: ${currentNote}`);
       }
 
       // Phrase Trainer
@@ -141,7 +145,7 @@
       }, '1m'); // this last value is how often the loop triggers
 
       // Grab random notes
-      function rando(min, max) {
+      function randomNotes(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
 
@@ -205,15 +209,18 @@
         rangeEnd.value = rangeEnd.lastChild.value;
       }
 
-      // Changing notes from noteArray to the range selection boxes
-      function appendScaleChanges() {
+      function grabScale() {
         // Grab scale from Tonal and set initial working range (totalRange)
         let getTonalRange = Tonal.Scale.rangeOf(
           `${scaleLetter.value} ${scaleTonality.value}`
         );
         totalRange = getTonalRange('A2', 'G5');
         console.log(totalRange);
+      }
 
+      // Changing notes from noteArray to the range selection boxes
+      function appendScaleChanges() {
+        grabScale();
         deleteOldNodes();
         appendNewNodes();
         filterNotesArray();
