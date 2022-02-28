@@ -86,12 +86,13 @@
       const metronome = new Tone.Loop(() => {
         noiseSynth.triggerAttackRelease('8n');
       }, '4n');
+
       /*  -----------------------------------------------------------------------------
             REFACTORING TO DO
             -edit random function?
             -make random note variable
             -use ("C Minor").notes to see if you can replace weird array behavior
-
+            -maybe create an object that holds the state of the notes array?
              ----------------------------------------------------------------------------- */
 
       // Start/Stop Button Function
@@ -115,7 +116,7 @@
       function startTransport() {
         Tone.Transport.bpm.value = speed;
         Tone.Transport.start();
-        metronome.start();
+        //metronome.start();
         //loopA.start();
         phraseTrainer.start();
       }
@@ -136,6 +137,7 @@
         Tone.Transport.scheduleOnce(trigSynthA(time));
         Tone.Transport.scheduleOnce(trigSynthA('+8n'));
         Tone.Transport.scheduleOnce(trigSynthA('+4n'));
+        //Tone.Transport.scheduleOnce(trigSynthA({ '+4n': 1, '+8n': 1 }));
       }, '1m'); // this last value is how often the loop triggers
 
       // Grab random notes
