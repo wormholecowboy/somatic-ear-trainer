@@ -1,0 +1,38 @@
+{
+  "name": "musical.js",
+  "version": "0.0.2",
+  "description": "An ABC music sequencer and synthesizer for WebAudio.",
+  "main": "musical.js",
+  "keywords": [
+    "music",
+    "synthesizer",
+    "sequencer",
+    "audio"
+  ],
+  "scripts": {
+    "build": "browserify src/index.js -o musical.js -s musical",
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/PencilCode/music.js.git"
+  },
+  "author": "David Bau",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PencilCode/music.js/issues"
+  },
+  "homepage": "https://github.com/PencilCode/music.js",
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "grunt": "latest",
+    "grunt-bowercopy": "latest",
+    "grunt-cli": "latest",
+    "grunt-contrib-connect": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-qunit": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-release": "latest",
+    "phantomjs": "latest"
+  }
+}

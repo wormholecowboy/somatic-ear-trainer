@@ -1,0 +1,10 @@
+{
+  "name": "musical.js",
+  "version": "0.0.1",
+  "description": "An ABC music sequencer and synthesizer for WebAudio.",
+  "devDependencies": {
+    "qunit": "latest",
+    "requirejs": "latest",
+    "sinonjs-built": "~1.9.1"
+  }
+}
