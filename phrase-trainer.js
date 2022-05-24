@@ -8,8 +8,14 @@ let notesArray = ['B', 'C', 'D', 'E', 'F'];
 const rhythmArray = ['', '/2', '/4', '<', '>', '2', '4'];
 let speed = 80;
 let numOfNotes = 5;
-let currentPhrase = '';
 const loop = new Tone.Loop(playPhrase(), '4n');
+var currentPhrase = {
+  current: '',
+  setCurrent: function (val) {
+    this.current = val;
+  },
+};
+createPhrase();
 
 function startStop() {
   if (startStopState == true) {
@@ -48,11 +54,11 @@ function getRandomRhythm() {
   return rhythmArray[i];
 }
 
-function createPhrase(num) {
+function createPhrase() {
   for (i = 0; i < numOfNotes; i++) {
     randomNote = () => getRandomNote();
     randomRhythm = () => getRandomRhythm();
-    currentPhrase = currentPhrase + randomNote + randomRhythm;
+    currentPhrase.setCurrent(currentPhrase.current + randomNote + randomRhythm);
   }
 }
 
@@ -61,9 +67,9 @@ M:4/4
 L:1/4
 Q:80
 K:Bm
-${currentPhrase}`;
+${currentPhrase.current}`;
 
 function playPhrase() {
+  createPhrase();
   piano.play(formattedPhrase);
 }
-console.log(formattedPhrase);
