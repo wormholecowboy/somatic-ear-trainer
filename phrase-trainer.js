@@ -8,14 +8,13 @@ let notesArray = ['B', 'C', 'D', 'E', 'F'];
 const rhythmArray = ['', '/2', '/4', '<', '>', '2', '4'];
 let speed = 80;
 let numOfNotes = 5;
-const loop = new Tone.Loop(playPhrase(), '4n');
-var currentPhrase = {
+let loop = new Tone.Loop(playPhrase(), '4n');
+let currentPhrase = {
   current: '',
-  setCurrent: function (val) {
+  setCurrent(val) {
     this.current = val;
   },
 };
-createPhrase();
 
 function startStop() {
   if (startStopState == true) {
@@ -40,22 +39,24 @@ function randomIndex(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
 
-  let val = Math.floor(Math.random() * (max - min) + min);
+  let val = () => {
+    Math.floor(Math.random() * (max - min) + min);
+  };
   return val;
 }
 
 function getRandomNote() {
-  i = randomIndex(0, notesArray.length);
+  let i = randomIndex(0, notesArray.length);
   return notesArray[i];
 }
 
 function getRandomRhythm() {
-  i = randomIndex(0, rhythmArray.length);
+  let i = randomIndex(0, rhythmArray.length);
   return rhythmArray[i];
 }
 
 function createPhrase() {
-  for (i = 0; i < numOfNotes; i++) {
+  for (let i = 0; i < numOfNotes; i++) {
     randomNote = () => getRandomNote();
     randomRhythm = () => getRandomRhythm();
     currentPhrase.setCurrent(currentPhrase.current + randomNote + randomRhythm);
