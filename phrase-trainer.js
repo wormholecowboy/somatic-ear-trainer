@@ -2,13 +2,14 @@
 // TODO: create musicaljs object (will passing as object work?)
 
 let piano = new Instrument({ wave: 'piano', detune: 0 });
-const now = Tone.now();
+let loop = new Tone.Loop(playPhrase(), '4n');
+//
 let startStopState = false;
 let notesArray = ['B', 'C', 'D', 'E', 'F'];
 const rhythmArray = ['', '/2', '/4', '<', '>', '2', '4'];
+//
 let speed = 80;
-let numOfNotes = 5;
-let loop = new Tone.Loop(playPhrase(), '4n');
+var numOfNotes = 5;
 let currentPhrase = {
   current: '',
   setCurrent(val) {
@@ -63,14 +64,16 @@ function createPhrase() {
   }
 }
 
-let formattedPhrase = `X:1
-M:4/4
-L:1/4
-Q:80
-K:Bm
-${currentPhrase.current}`;
+// var formattedPhrase = `X:1\n
+// M:4/4\n
+// L:1/4\n
+// Q:80\n
+// K:Bm\n
+// ${currentPhrase.current}`;
+
+var formattedPhrase = `${currentPhrase.current}`;
 
 function playPhrase() {
   createPhrase();
-  piano.play(formattedPhrase);
+  piano.play({ tempo: 80 }, formattedPhrase);
 }
