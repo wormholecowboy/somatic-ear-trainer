@@ -10,8 +10,8 @@ var currentPhrase = {
 };
 var startStopState = false;
 var notesArray = ['B', 'C', 'D', 'E', 'F'];
-const rhythmArray = ['', '/2', '/4', '2', '4'];
-var speed = 80;
+const rhythmArray = ['', '/2', '/4', '2'];
+var speed = 20;
 var piano = new Instrument({ wave: 'piano', detune: 0 });
 
 function startStop() {
@@ -33,8 +33,7 @@ function startTransport() {
   Tone.Transport.start();
   loop.start();
   //piano.tone('D');
-  createPhrase();
-  console.log('formatedphrase', formattedPhrase);
+  console.log('currentPhrase', currentPhrase.current);
 }
 
 function randomIndex(min, max) {
@@ -50,36 +49,32 @@ function getRandomNote() {
   return notesArray[i];
 }
 
-let getRandomRhythm = () => {
+function getRandomRhythm() {
   let i = randomIndex(0, rhythmArray.length);
   return rhythmArray[i];
-};
+}
 
 function createPhrase() {
-  for (let i = 0; i < numOfNotes - 1; i++) {
+  for (let i = 0; i < numOfNotes; i++) {
     randomNote = getRandomNote();
     randomRhythm = getRandomRhythm();
-    console.log('randoms: ', randomNote, randomRhythm);
     currentPhrase.setCurrent(currentPhrase.current + randomNote + randomRhythm);
-    console.log(currentPhrase);
   }
 }
 
-// var formattedPhrase = `X:1\n
-// M:4/4\n
-// L:1/4\n
-// Q:80\n
-// K:Bm\n
-// ${currentPhrase.current}`;
+var formattedPhrase =
+  'X:1\n' + 'M:4/4\n' + 'L:1/4\n' + 'K:Bm\n' + currentPhrase.current;
 
-var formattedPhrase = `${currentPhrase.current}`;
+// TODO: figure out how to wrap formattedPhrase in quotes for musicaljs, do I have to end it with that empty string thing at the end of moonlight sonata?
 
 function playPhrase() {
   createPhrase();
-  console.log('phrase: ', formattedPhrase);
-  piano.play({ tempo: 80 }, formattedPhrase);
+  console.log('phrase: ', currentPhrase.current);
+  piano.play({ tempo: 80 }, currentPhrase.current);
+  currentPhrase.setCurrent('');
 }
-var loop = new Tone.Loop(playPhrase(), '8n');
+var loop = new Tone.Loop(playPhrase, '1n');
 
-console.log('something', rhythmArray);
-console.log('other', notesArray);
+console.log('rArray', rhythmArray);
+console.log('nArray', notesArray);
+console.log('loopObj', { loop });
