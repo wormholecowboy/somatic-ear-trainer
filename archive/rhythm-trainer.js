@@ -1,4 +1,3 @@
-//TODO: Tone.js loop is not running.
 //
 //
 var numOfNotes = 5;
@@ -64,8 +63,6 @@ function createPhrase() {
 
 var formattedPhrase =
   'X:1\n' + 'M:4/4\n' + 'L:1/4\n' + 'K:Bm\n' + currentPhrase.current;
-
-// TODO: figure out how to wrap formattedPhrase in quotes for musicaljs, do I have to end it with that empty string thing at the end of moonlight sonata?
 
 function playPhrase() {
   createPhrase();
