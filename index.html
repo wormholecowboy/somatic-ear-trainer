@@ -15,7 +15,7 @@
     <main>
       <h1>The Somatic Ear Trainer</h1>
       <h2 id="light">o</h2>
-      <button id="run" onclick="run()">Start/Stop</button>
+      <button id="run" onclick="run()" onkeydown="run()">Start/Stop</button>
       <br />
       <select id="scaleLetter">
         <option>Ab</option>
@@ -33,6 +33,7 @@
       <select id="scaleTonality">
         <option value="major">Major</option>
         <option value="minor">Minor</option>
+        <option value="blues">Blues</option>
       </select>
       <br />
       <div id="range-selector">
