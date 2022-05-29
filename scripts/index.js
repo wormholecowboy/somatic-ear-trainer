@@ -1,3 +1,13 @@
+// The idea is to generate random notes in a range to inspire your to create your own vocabulary and also train your fingers to know the major and minor scale inside and out. So, eventually, you can start executing new phrases that come into your mind in the middle of a solo on the spot! Your fingers have worked this area so much, they just know what to do!!
+
+// TODO: Remove loop and make it a one-off phrase
+// TODO: Make space bar trigger new phrase
+// TODO: Add numOFNotes selector to DOM
+// TODO: Maybe add some rhythm elements? look at docs
+// TODO: Add musicaljs input field to build phrases
+// TODO: refactor
+// TODO: upload and play backing track
+//
 // Globals
 const synthA = new Tone.Synth().toDestination();
 const chord = new Tone.PolySynth(Tone.Synth).toDestination();
@@ -21,15 +31,6 @@ const noiseSynth = new Tone.NoiseSynth().toDestination();
 const metronome = new Tone.Loop(() => {
   noiseSynth.triggerAttackRelease('8n');
 }, '4n');
-
-/*  -----------------------------------------------------------------------------
-            TODO: REFACTORING TO DO
-            -edit random function?
-            -maybe create an object that holds the state of the notes array?
-
-            FEATURES TO ADD
-            -create favorites
-             ----------------------------------------------------------------------------- */
 
 function greenRedLight() {
   if (light.style.color != 'green') {
@@ -113,15 +114,12 @@ let rhythms = ['+4n', '+8n', '+16n', '+4n.', '+8n.', '+16n.'];
 let randomRhythm = random(0, rhythms.length);
 
 console.log(rhythms[randomRhythm]);
-/* -----------------------------------------DOM Manipulation -----------------------------------
-             ----------------------------------------------------------------------------------------------------*/
 
 // Set default values
 function setRangeEnd() {
   rangeEnd.value = rangeEnd.lastChild.value;
 }
 
-// Delete old nodes
 function deleteOldNodes() {
   while (rangeStart.hasChildNodes()) {
     rangeStart.removeChild(rangeStart.lastChild);
@@ -198,7 +196,3 @@ document.getElementById('speedSlider').addEventListener('input', () => {
   changeSpeed();
   displaySpeed();
 });
-
-// Starting Defaults I like
-//scaleLetter.value = 'B';
-//scaleTonality.value = 'minor';
