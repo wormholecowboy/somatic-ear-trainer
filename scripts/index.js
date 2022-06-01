@@ -20,6 +20,7 @@ var currentNote = 0;
 var previousNote = 0;
 let totalRange;
 let speed = 25;
+let numOFNotes;
 // HTML Elements
 let rangeStart = document.getElementById('range-start');
 let rangeEnd = document.getElementById('range-end');
@@ -62,6 +63,11 @@ function startTransport() {
   //metronome.start();
   //loopA.start();
   phraseTrainer.start();
+}
+
+function updateNumOfNotes(num) {
+  numOFNotes = num;
+  console.log(numOFNotes);
 }
 
 // Trigger the synth sound
@@ -192,6 +198,8 @@ document
 document
   .getElementById('range-end')
   .addEventListener('input', filterNotesArray);
+document.getElementById('numOfNotesSelect');
+addEventListener('input', updateNumOfNotes);
 document.getElementById('speedSlider').addEventListener('input', () => {
   changeSpeed();
   displaySpeed();
