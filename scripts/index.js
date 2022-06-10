@@ -1,15 +1,16 @@
 // The idea is to generate random notes in a range to inspire your to create your own vocabulary and also train your fingers to know the major and minor scale inside and out. So, eventually, you can start executing new phrases that come into your mind in the middle of a solo on the spot! Your fingers have worked this area so much, they just know what to do!!
 // TODO: figure out why bpm slider is not showing correct default
-// TODO: Make space bar trigger new phrase
+// TODO: repeat phrase (will have to extract array from oneShot somehow)
+// https://stackoverflow.com/questions/16345870/keydown-keyup-events-for-specific-keys
 // TODO: Maybe add some rhythm elements? look at docs
 // TODO: Add musicaljs input field to build phrases
 // TODO: refactor all this shit code
 // TODO: upload and play backing track
+// TODO: build a back end for users, save phrases in mjs, save backing tracks, save arrays
 //
 // Globals
 const synthA = new Tone.Synth().toDestination();
 var selectedRangeOfNotes = [];
-'B2', 'C#3', 'D3', 'E3', 'F#3';
 var startStopState = false;
 var currentNote = 0;
 var previousNote = 0;
@@ -173,3 +174,6 @@ document.getElementById('speedSlider').addEventListener('input', () => {
   changeSpeed();
   displaySpeed();
 });
+
+updateNumOfNotes();
+displaySpeed();
