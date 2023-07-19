@@ -1,5 +1,5 @@
-import * as Tone from '../node_modules/tone'
-import * as Tonal from '../node_modules/tonal'
+import * as Tone from 'tone'
+import * as Tonal from 'tonal'
 
 // The idea is to generate random notes in a range to inspire your to create your own vocabulary and also train your fingers to know the major and minor scale inside and out. So, eventually, you can start executing new phrases that come into your mind in the middle of a solo on the spot! Your fingers have worked this area so much, they just know what to do!!
 // TODO: figure out why bpm slider is not showing correct default
