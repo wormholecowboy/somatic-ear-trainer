@@ -1,5 +1,5 @@
 {
-  "name": "set",
+  "name": "somatic-ear-trainer",
   "version": "1.0.0",
   "description": "a way to connect your fingers to your ears",
   "main": "Tone.js",
@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/wormholecowboy/somatic-ear-trainer/issues"
   },
-  "homepage": "https://github.com/wormholecowboy/somatic-ear-trainer#readme"
+  "homepage": "https://github.com/wormholecowboy/somatic-ear-trainer#readme",
+  "dependencies": {
+    "tonal": "^5.0.0",
+    "tone": "^14.7.77"
+  }
 }

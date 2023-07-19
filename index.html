@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,67 +9,62 @@
 
     <link rel="stylesheet" type="text/css" href="style.css" />
 
-    <script src="./tone/build/Tone.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script>
-  </head>
-  <body>
-    <main>
-      <h1>The Somatic Ear Trainer</h1>
-      <button id="run" onclick="run()">Start/Stop</button>
-      <br />
-      <select id="scaleLetter">
-        <option>Ab</option>
-        <option>A</option>
-        <option>Bb</option>
-        <option selected>B</option>
-        <option>C</option>
-        <option>Db</option>
-        <option>D</option>
-        <option>Eb</option>
-        <option>F</option>
-        <option>Gb</option>
-        <option>G</option>
-      </select>
-      <select id="scaleTonality">
-        <option value="major">Major</option>
-        <option value="minor">Minor</option>
-        <option value="blues" selected>Blues</option>
-      </select>
-      <br />
-      <div id="range-selector">
-        <select id="range-start"></select>
-        <select id="range-end"></select>
-      </div>
+    <!-- <script src="./tone/build/Tone.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script> -->
+</head>
 
-      <br />
-      <h3 class="numOfNotesH3">Number of Notes</h3>
-      <select id="numOfNotesSelect">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option selected>4</option>
-        <option>5</option>
-        <option>6</option>
-        <option>7</option>
-        <option>8</option>
-        <option>9</option>
-        <option>10</option>
-      </select>
-      <br />
-      <div class="tooltip">
-        <p id="ptag"></p>
-      </div>
-      <input
-        type="range"
-        min="1"
-        value="80"
-        max="240"
-        class="slider"
-        id="speedSlider"
-        oninput="displaySpeed(this.value);"
-      />
-      <br />
+<body>
+    <main>
+        <h1>The Somatic Ear Trainer</h1>
+        <button id="run" onclick="run()">Start/Stop</button>
+        <br />
+        <select id="scaleLetter">
+            <option>Ab</option>
+            <option>A</option>
+            <option>Bb</option>
+            <option selected>B</option>
+            <option>C</option>
+            <option>Db</option>
+            <option>D</option>
+            <option>Eb</option>
+            <option>F</option>
+            <option>Gb</option>
+            <option>G</option>
+        </select>
+        <select id="scaleTonality">
+            <option value="major">Major</option>
+            <option value="minor">Minor</option>
+            <option value="blues" selected>Blues</option>
+        </select>
+        <br />
+        <div id="range-selector">
+            <select id="range-start"></select>
+            <select id="range-end"></select>
+        </div>
+
+        <br />
+        <h3 class="numOfNotesH3">Number of Notes</h3>
+        <select id="numOfNotesSelect">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option selected>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+        </select>
+        <br />
+        <div class="tooltip">
+            <p id="ptag"></p>
+        </div>
+        <input type="range" min="1" value="80" max="240" class="slider" id="speedSlider"
+            oninput="displaySpeed(this.value);" />
+        <br />
     </main>
-    <script src="./scripts/index.js"></script>
-  </body>
+    <script type="module" src="./scripts/index.js"></script>
+</body>
+
 </html>
